@@ -37,7 +37,7 @@ export default class LoginTab extends Component {
     });
 
     if (this.formStatus()){
-      fetch('http://localhost:3000/api/signin', {
+      fetch('http://104.236.158.41:3000/api/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

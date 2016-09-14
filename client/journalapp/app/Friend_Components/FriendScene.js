@@ -28,7 +28,7 @@ export default class FriendScene extends Component {
   }
 
   getFriendPosts(){
-    var url = 'http://localhost:3000/api/entries' + "/?userId=" + this.props.friendId.toString();
+    var url = 'http://104.236.158.41:3000/api/entries' + "/?userId=" + this.props.friendId.toString();
     AsyncStorage.getItem('@MySuperStore:token', (err, token) => {
       fetch(url , {
         method: 'GET',
