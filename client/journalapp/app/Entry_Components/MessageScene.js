@@ -26,7 +26,7 @@ export default class MessageScene extends Component {
     super(props);
     this.props = props;
     this.state = {
-      dynamicHeight: () => { return {height: Dimensions.get('window').height - 49 - 70 -300}}
+      dynamicHeight: () => { return {height: Dimensions.get('window').height - 49 - 70 - 300}}
     };
   };
 
