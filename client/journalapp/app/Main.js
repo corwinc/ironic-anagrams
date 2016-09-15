@@ -20,7 +20,6 @@ import SettingsTab from './Settings_Components/SettingsTab';
 import FriendScene from './Friend_Components/FriendScene';
 import MessageScene from './Entry_Components/MessageScene';
 import SearchFriends from './Friend_Components/SearchFriends';
-import PhotoButton from './Entry_Components/PhotoButton';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -38,6 +37,7 @@ export default class Main extends Component {
       page: 'EntriesTab',
       entries: ds.cloneWithRows([]),
       newEntry: '',
+      newEntryPhotos: [],
       friendName: '',
       location: ''
     };
@@ -143,6 +143,13 @@ export default class Main extends Component {
     });
   }
 
+  handlePhotoPress() {
+    console.log('inside handleCameraPress');
+    // trigger iOS photo select menu
+    // on select, setState to add photos to this.state.newEntryPhotos
+
+  }
+
   // According to the state's current page, return a certain tab view. Tab views are all stateful, and will 
   // potentially contain logic to interact with the server, or navigate to scenes using the Navigator. This 
   // is essentially the tab's router.
@@ -214,7 +221,7 @@ export default class Main extends Component {
           getEntries={ this.getEntries.bind(this) }
           updateEntry = { this.updateEntry.bind(this) }
           location={ this.state.location }
-          handleCameraPress={PhotoButton.handleCameraPress}/>
+          handlePhotoPress={this.handlePhotoPress.bind(this)}/>
       )
     } else if (route.title === 'SearchFriends') {
       return (

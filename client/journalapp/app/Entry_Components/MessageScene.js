@@ -52,11 +52,6 @@ export default class MessageScene extends Component {
     );
   }
 
-  handlePhotoPress() {
-    console.log('inside handleCameraPress 2');
-    // trigger iOS photo select menu
-  }
-
   render() {
     return (
       <ScrollView style={ styles.container } ref='scrollView'>
@@ -71,7 +66,7 @@ export default class MessageScene extends Component {
             onFocus= { this.moveUpForKeyboardShow.bind(this) }
             onBlur= { this.moveDownForKeyboardHide.bind(this) }/>
         <View style={ [styles.bodyWidth, styles.footer] }>
-          <PhotoButton handlePhotoPress={this.handlePhotoPress.bind(this)} />
+          <PhotoButton handlePhotoPress={this.props.handlePhotoPress} />
           <Icon style={ [styles.footerContent, styles.footerPadlock] } name="lock-open"/>
           <Icon style={ [styles.footerContent, styles.footerArrow] } name="near-me"/>
           <Text style={ [styles.footerContent, styles.footerText] }>{ this.props.location }</Text>
