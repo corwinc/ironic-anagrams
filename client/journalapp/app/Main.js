@@ -98,6 +98,7 @@ export default class Main extends Component {
   // mount and also after the user makes a new entry (so it'll autorefresh the entry list).
   getEntries(){
     AsyncStorage.getItem('@MySuperStore:token', (err, token) => {
+      // Make sure photos are retrieved w/ api/entries endpoint
       fetch('http://104.236.158.41:3000/api/entries', {
         method: 'GET',
         headers: {
@@ -123,6 +124,7 @@ export default class Main extends Component {
   // publish onPress method.
   postEntry(navigator){
     AsyncStorage.getItem('@MySuperStore:token', (err, token) => {
+      // Add 'photos: this.state.newEntryPhotos'
       var newEntry = { text: this.state.newEntry, location: this.state.location };
 
       fetch('http://104.236.158.41:3000/api/entries', {
@@ -148,6 +150,12 @@ export default class Main extends Component {
     // trigger iOS photo select menu
     // on select, setState to add photos to this.state.newEntryPhotos
 
+  }
+
+  handlePhotoSelect(photos) {
+    console.log('inside handlePhotoSelect');
+    // get selected photos from image-picker
+    // this.setState({newEntryPhotos: this.state.newEntryPhotos.concat(photos)})
   }
 
   // According to the state's current page, return a certain tab view. Tab views are all stateful, and will 
@@ -221,7 +229,8 @@ export default class Main extends Component {
           getEntries={ this.getEntries.bind(this) }
           updateEntry = { this.updateEntry.bind(this) }
           location={ this.state.location }
-          handlePhotoPress={this.handlePhotoPress.bind(this)}/>
+          handlePhotoPress={this.handlePhotoPress.bind(this)}
+          handlePhotoSelect={this.handlePhotoSelect.bind(this)} />
       )
     } else if (route.title === 'SearchFriends') {
       return (
