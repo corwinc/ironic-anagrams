@@ -17,7 +17,7 @@ import styles from '../styles/MessageSceneStyles';
 
 // Note that this is a scene, not a tab view. In this case, that means the user clicked on "What did you do today?" in 
 // EntriesTab.js. EntriesTab then tells Main.js to navigate to this scene. 
-export default class FriendScene extends Component {
+export default class MessageScene extends Component {
   constructor(props) {
     super(props);
     this.props = props;
@@ -62,7 +62,7 @@ export default class FriendScene extends Component {
             onFocus= { this.moveUpForKeyboardShow.bind(this) }
             onBlur= { this.moveDownForKeyboardHide.bind(this) }/>
         <View style={ [styles.bodyWidth, styles.footer] }>
-          <Button>
+          <Button onPress={() => this.props.handleCameraPress()}>
             <Icon style={ [styles.footerContent, styles.footerPhoto] } name="add-a-photo" />
           </Button>
           <Icon style={ [styles.footerContent, styles.footerPadlock] } name="lock-open"/>

@@ -140,6 +140,11 @@ export default class Main extends Component {
     });
   }
 
+  handleCameraPress() {
+    console.log('inside handleCameraPress');
+    // trigger iOS photo select menu
+  }
+
   // According to the state's current page, return a certain tab view. Tab views are all stateful, and will 
   // potentially contain logic to interact with the server, or navigate to scenes using the Navigator. This 
   // is essentially the tab's router.
@@ -210,7 +215,8 @@ export default class Main extends Component {
           navigator={navigator}
           getEntries={ this.getEntries.bind(this) }
           updateEntry = { this.updateEntry.bind(this) }
-          location={ this.state.location }/>
+          location={ this.state.location }
+          handleCameraPress={this.handleCameraPress.bind(this)}/>
       )
     } else if (route.title === 'SearchFriends') {
       return (
