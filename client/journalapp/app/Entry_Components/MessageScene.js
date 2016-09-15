@@ -62,6 +62,9 @@ export default class FriendScene extends Component {
             onFocus= { this.moveUpForKeyboardShow.bind(this) }
             onBlur= { this.moveDownForKeyboardHide.bind(this) }/>
         <View style={ [styles.bodyWidth, styles.footer] }>
+          <Button>
+            <Icon style={ [styles.footerContent, styles.footerPhoto] } name="add-a-photo" />
+          </Button>
           <Icon style={ [styles.footerContent, styles.footerPadlock] } name="lock-open"/>
           <Icon style={ [styles.footerContent, styles.footerArrow] } name="near-me"/>
           <Text style={ [styles.footerContent, styles.footerText] }>{ this.props.location }</Text>

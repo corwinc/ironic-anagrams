@@ -49,6 +49,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: Dimensions.get('window').width * .02,
     width: Dimensions.get('window').width * .46,
+  },
+  footerPhoto: {
+    marginLeft: Dimensions.get('window').width * .08,
+    width: Dimensions.get('window').width * .1,
   }
 });
 
