@@ -20,11 +20,13 @@ import SettingsTab from './Settings_Components/SettingsTab';
 import FriendScene from './Friend_Components/FriendScene';
 import MessageScene from './Entry_Components/MessageScene';
 import SearchFriends from './Friend_Components/SearchFriends';
+import imagePicker from './Entry_Components/ImagePicker';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import styles from './styles/MainStyles';
 
+var ImagePicker = require('react-native-image-picker');
 
 
 export default class Main extends Component {
@@ -41,6 +43,8 @@ export default class Main extends Component {
       friendName: '',
       location: ''
     };
+
+    this.imagePickerOptions = imagePicker.options;
   }
 
   // This is used inside MessageScene, where the user's input updates the Main component's newEntry state.
@@ -146,9 +150,34 @@ export default class Main extends Component {
   }
 
   handlePhotoPress() {
-    console.log('inside handleCameraPress');
+    console.log('inside handlePhotoPress');
     // trigger iOS photo select menu
     // on select, setState to add photos to this.state.newEntryPhotos
+
+    ImagePicker.showImagePicker(this.imagePickerOptions, (response) => {
+      console.log('showImagePicker Response = ', response);
+     
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        // You can display the image using either data... 
+        console.log('Inside handlePhotoPress SUCCESS block!');
+        const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+     
+        this.setState({
+          newEntryPhotos: source
+        });
+
+        console.log('this.state.newEntryPhotos: ', this.state.newEntryPhotos);
+      }
+    });
 
   }
 
@@ -157,6 +186,8 @@ export default class Main extends Component {
     // get selected photos from image-picker
     // this.setState({newEntryPhotos: this.state.newEntryPhotos.concat(photos)})
   }
+
+
 
   // According to the state's current page, return a certain tab view. Tab views are all stateful, and will 
   // potentially contain logic to interact with the server, or navigate to scenes using the Navigator. This 
