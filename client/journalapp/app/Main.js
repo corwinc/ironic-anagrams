@@ -21,9 +21,9 @@ import FriendScene from './Friend_Components/FriendScene';
 import MessageScene from './Entry_Components/MessageScene';
 import SearchFriends from './Friend_Components/SearchFriends';
 
-import Icon from 'react-native-vector-icons/MaterialIcons'
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles/MainStyles';
+import imagePicker from 'react-native-image-picker';
 
 export default class Main extends Component {
   constructor(props) {
