@@ -200,9 +200,6 @@ export default class Main extends Component {
           newEntryPhotos: source
         });
 
-        // TODO: reload message view to see selected photo
-
-
         // console.log('this.state.newEntryPhotos: ', this.state.newEntryPhotos);
       }
     });
