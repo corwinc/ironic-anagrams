@@ -9,7 +9,8 @@ import {
   ScrollView,
   AsyncStorage,
   Navigator,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -25,8 +26,7 @@ export default class MessageScene extends Component {
     super(props);
     this.props = props;
     this.state = {
-      dynamicHeight: () => { return {height: Dimensions.get('window').height - 49 - 70}},
-      photos: []
+      dynamicHeight: () => { return {height: Dimensions.get('window').height - 49 - 70 -300}}
     };
   };
 
@@ -55,16 +55,17 @@ export default class MessageScene extends Component {
   render() {
     return (
       <ScrollView style={ styles.container } ref='scrollView'>
-        <TextInput
-            keyboardType='default'
-            keyboardAppearance='light' 
-            multiline={ true }
-            placeholder= 'What did you do today?'
-            style={ [this.state.dynamicHeight(), styles.bodyWidth, styles.fadedText] }
-            maxLength={ 100 }
-            onChangeText={ (text) => this.props.updateEntry(text) }
-            onFocus= { this.moveUpForKeyboardShow.bind(this) }
-            onBlur= { this.moveDownForKeyboardHide.bind(this) }/>
+      <TextInput
+        keyboardType='default'
+        keyboardAppearance='light' 
+        multiline={ true }
+        placeholder= 'What did you do today?'
+        style={ [this.state.dynamicHeight(), styles.bodyWidth, styles.fadedText] }
+        maxLength={ 100 }
+        onChangeText={ (text) => this.props.updateEntry(text) }
+        onFocus= { this.moveUpForKeyboardShow.bind(this) }
+        onBlur= { this.moveDownForKeyboardHide.bind(this) }/>
+        <Image source={this.props.newEntryPhotos} style={{width: 300, height: 300}} />
         <View style={ [styles.bodyWidth, styles.footer] }>
           <PhotoButton handlePhotoPress={this.props.handlePhotoPress} />
           <Icon style={ [styles.footerContent, styles.footerPadlock] } name="lock-open"/>
@@ -75,3 +76,5 @@ export default class MessageScene extends Component {
     )
   }
 }
+
+

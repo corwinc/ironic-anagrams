@@ -39,7 +39,7 @@ export default class Main extends Component {
       page: 'EntriesTab',
       entries: ds.cloneWithRows([]),
       newEntry: '',
-      newEntryPhotos: [],
+      newEntryPhotos: {},
       friendName: '',
       location: ''
     };
@@ -150,12 +150,8 @@ export default class Main extends Component {
   }
 
   handlePhotoPress() {
-    console.log('inside handlePhotoPress');
-    // trigger iOS photo select menu
-    // on select, setState to add photos to this.state.newEntryPhotos
-
     ImagePicker.showImagePicker(this.imagePickerOptions, (response) => {
-      console.log('showImagePicker Response = ', response);
+      console.log('inside showImagePicker');
      
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -167,26 +163,20 @@ export default class Main extends Component {
         console.log('User tapped custom button: ', response.customButton);
       }
       else {
-        // You can display the image using either data... 
-        console.log('Inside handlePhotoPress SUCCESS block!');
         const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
      
         this.setState({
           newEntryPhotos: source
         });
 
-        console.log('this.state.newEntryPhotos: ', this.state.newEntryPhotos);
+        // TODO: reload message view to see selected photo
+
+
+        // console.log('this.state.newEntryPhotos: ', this.state.newEntryPhotos);
       }
     });
 
   }
-
-  handlePhotoSelect(photos) {
-    console.log('inside handlePhotoSelect');
-    // get selected photos from image-picker
-    // this.setState({newEntryPhotos: this.state.newEntryPhotos.concat(photos)})
-  }
-
 
 
   // According to the state's current page, return a certain tab view. Tab views are all stateful, and will 
@@ -260,8 +250,8 @@ export default class Main extends Component {
           getEntries={ this.getEntries.bind(this) }
           updateEntry = { this.updateEntry.bind(this) }
           location={ this.state.location }
-          handlePhotoPress={this.handlePhotoPress.bind(this)}
-          handlePhotoSelect={this.handlePhotoSelect.bind(this)} />
+          newEntryPhotos={this.state.newEntryPhotos}
+          handlePhotoPress={this.handlePhotoPress.bind(this)} />
       )
     } else if (route.title === 'SearchFriends') {
       return (
