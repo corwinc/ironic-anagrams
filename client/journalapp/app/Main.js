@@ -39,12 +39,14 @@ export default class Main extends Component {
       page: 'EntriesTab',
       entries: ds.cloneWithRows([]),
       newEntry: '',
-      newEntryPhotos: {},
+      newEntryPhotos: null,
       friendName: '',
       location: ''
     };
 
     this.imagePickerOptions = imagePicker.options;
+
+    this.clearPhotoState = this.clearPhotoState.bind(this);
   }
 
   // This is used inside MessageScene, where the user's input updates the Main component's newEntry state.
@@ -127,26 +129,55 @@ export default class Main extends Component {
   // Enter a new entry for the user. This method is here rather than in EntryTab.js so that the user may use the 
   // publish onPress method.
   postEntry(navigator){
-    AsyncStorage.getItem('@MySuperStore:token', (err, token) => {
-      // Add 'photos: this.state.newEntryPhotos'
-      var newEntry = { text: this.state.newEntry, location: this.state.location };
+    console.log('this.state.entryPhotos:', this.state.newEntryPhotos);
 
-      fetch('http://104.236.158.41:3000/api/entries', {
-        method: 'POST',
-        headers: {
-         'Content-Type': 'application/json',
-         'x-access-token': token
-        },
-        body: JSON.stringify(newEntry)
-      })
-        .then((response) => {
-          this.getEntries();
-          navigator.pop();
+    if (this.state.newEntryPhotos === null) {
+      console.log('inside postEntry, no photo');
+      AsyncStorage.getItem('@MySuperStore:token', (err, token) => {
+        // Add 'photos: this.state.newEntryPhotos'
+        var newEntry = { text: this.state.newEntry, location: this.state.location };
+
+        fetch('http://104.236.158.41:3000/api/entries', {
+          method: 'POST',
+          headers: {
+           'Content-Type': 'application/json',
+           'x-access-token': token
+          },
+          body: JSON.stringify(newEntry)
         })
-          .catch((error) => {
-            console.warn("fetch error:", error)
-          });
-    });
+          .then((response) => {
+            this.getEntries();
+            navigator.pop();
+          })
+            .catch((error) => {
+              console.warn("fetch error:", error)
+            });
+      });
+
+    } else {
+      console.log('inside postEntry, with photo');
+      AsyncStorage.getItem('@MySuperStore:token', (err, token) => {
+        // Add 'photos: this.state.newEntryPhotos'
+        var newEntry = { text: this.state.newEntry, location: this.state.location, photo: this.state.newEntryPhotos }; 
+
+        fetch('http://104.236.158.41:3000/api/entriesWithPhoto', {
+          method: 'POST',
+          headers: {
+           'Content-Type': 'application/json',
+           'x-access-token': token
+          },
+          body: JSON.stringify(newEntry)
+        })
+          .then((response) => {
+            this.getEntries();
+            navigator.pop();
+            this.clearPhotoState();
+          })
+            .catch((error) => {
+              console.warn("fetch error:", error)
+            });
+      });
+    }
   }
 
   handlePhotoPress() {
@@ -175,7 +206,10 @@ export default class Main extends Component {
         // console.log('this.state.newEntryPhotos: ', this.state.newEntryPhotos);
       }
     });
+  }
 
+  clearPhotoState () {
+    this.setState({newEntryPhotos: null });
   }
 
 
@@ -200,6 +234,7 @@ export default class Main extends Component {
   // return the appropriate Component(s). 
   navigatorRenderScene(route, navigator) {
     const { page } = this.state;
+
     if (route.title === 'Main') {
       return (
         <View style={styles.container}>
@@ -266,6 +301,9 @@ export default class Main extends Component {
   // of the main page (including the appropriate tab view, according to the renderTab rendering of 
   // the current tab view);
   render() {
+    // Keep clearPhotoState bound to class object
+    var clearFunc = this.clearPhotoState;
+
     return (
       <Navigator
         initialRoute={ { title: 'Main' } }
@@ -290,7 +328,7 @@ export default class Main extends Component {
                 } else if ( route.title === 'MessageScene' ){
                   return (
                     <View style={ styles.topBarView }>
-                      <Text onPress={ ()=>{ navigator.pop() }} >
+                      <Text onPress={ ()=>{ navigator.pop(); clearFunc() }} >
                         <Icon style= { styles.arrow } name="close"/>
                       </Text>
                     </View>
