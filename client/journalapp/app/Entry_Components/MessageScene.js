@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PhotoButton from './PhotoButton';
+
 import {
   StyleSheet,
   Text,
@@ -10,10 +12,11 @@ import {
   Dimensions
 } from 'react-native';
 
-import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import styles from '../styles/MessageSceneStyles';
+import imagePicker from 'react-native-image-picker';
+
+var ImagePicker = require('react-native-image-picker');
 
 // Note that this is a scene, not a tab view. In this case, that means the user clicked on "What did you do today?" in 
 // EntriesTab.js. EntriesTab then tells Main.js to navigate to this scene. 
@@ -22,7 +25,8 @@ export default class MessageScene extends Component {
     super(props);
     this.props = props;
     this.state = {
-      dynamicHeight: () => { return {height: Dimensions.get('window').height - 49 - 70}}
+      dynamicHeight: () => { return {height: Dimensions.get('window').height - 49 - 70}},
+      photos: []
     };
   };
 
@@ -48,6 +52,11 @@ export default class MessageScene extends Component {
     );
   }
 
+  handlePhotoPress() {
+    console.log('inside handleCameraPress 2');
+    // trigger iOS photo select menu
+  }
+
   render() {
     return (
       <ScrollView style={ styles.container } ref='scrollView'>
@@ -62,9 +71,7 @@ export default class MessageScene extends Component {
             onFocus= { this.moveUpForKeyboardShow.bind(this) }
             onBlur= { this.moveDownForKeyboardHide.bind(this) }/>
         <View style={ [styles.bodyWidth, styles.footer] }>
-          <Button onPress={() => this.props.handleCameraPress()}>
-            <Icon style={ [styles.footerContent, styles.footerPhoto] } name="add-a-photo" />
-          </Button>
+          <PhotoButton handlePhotoPress={this.handlePhotoPress.bind(this)} />
           <Icon style={ [styles.footerContent, styles.footerPadlock] } name="lock-open"/>
           <Icon style={ [styles.footerContent, styles.footerArrow] } name="near-me"/>
           <Text style={ [styles.footerContent, styles.footerText] }>{ this.props.location }</Text>
